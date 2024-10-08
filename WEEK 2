@@ -1,0 +1,151 @@
+mysql> select *from car;
++----------+--------+------+
+| reg_num  | Model  | year |
++----------+--------+------+
+| KA031181 | LANCER | 1957 |
+| KA041702 | AUDI   | 2005 |
+| KA052250 | INDICA | 1990 |
+| KA053408 | HONDA  | 2008 |
+| KA095477 | TOYOTA | 1998 |
++----------+--------+------+
+5 rows in set (0.00 sec)
+mysql> select *from person;
++-----------+---------+-----------------+
+| Driver_id | Name    | Address         |
++-----------+---------+-----------------+
+| A01       | Richard | Srinivas Nagar  |
+| A02       | Pradeep | Rajajinagar     |
+| A03       | Smith   | Ashok Nagar     |
+| A04       | Venu    | N R Colony      |
+| A05       | John    | Hanumanth Nagar |
++-----------+---------+-----------------+
+5 rows in set (0.00 sec)
+mysql> select *from car;
++----------+--------+------+
+| reg_num  | Model  | year |
++----------+--------+------+
+| KA031181 | LANCER | 1957 |
+| KA041702 | AUDI   | 2005 |
+| KA052250 | INDICA | 1990 |
+| KA053408 | HONDA  | 2008 |
+| KA095477 | TOYOTA | 1998 |
++----------+--------+------+
+5 rows in set (0.00 sec)
+mysql> select *from accident;
++------------+---------------+------------------+
+| Report_num | Accident_date | location         |
++------------+---------------+------------------+
+|         11 | 2003-01-01    | Mysore Road      |
+|         12 | 2004-02-02    | South End Circle |
+|         13 | 2003-01-21    | Bull Temple Road |
+|         14 | 2008-02-17    | Mysore Road      |
+|         15 | 2005-03-04    | Kanakpura Road   |
+|         16 | 2008-03-15    | Domlur           |
++------------+---------------+------------------+
+6 rows in set (0.00 sec)
+mysql> select *from owns;
++-----------+----------+
+| Driver_id | reg_num  |
++-----------+----------+
+| A03       | KA031181 |
+| A05       | KA041702 |
+| A01       | KA052250 |
+| A02       | KA053408 |
+| A04       | KA095477 |
++-----------+----------+
+5 rows in set (0.00 sec)
+mysql> select *from participated;
++-----------+----------+------------+---------------+
+| Driver_id | reg_num  | Report_num | Damage_amount |
++-----------+----------+------------+---------------+
+| A01       | KA052250 |         11 |         10000 |
+| A02       | KA053408 |         12 |         50000 |
+| A03       | KA095477 |         13 |         25000 |
+| A04       | KA031181 |         14 |          3000 |
+| A05       | KA041702 |         15 |          5000 |
++-----------+----------+------------+---------------+
+5 rows in set (0.00 sec)
+mysql> select *from car;
++----------+--------+------+
+| reg_num  | Model  | year |
++----------+--------+------+
+| KA031181 | LANCER | 1957 |
+| KA041702 | AUDI   | 2005 |
+| KA052250 | INDICA | 1990 |
+| KA053408 | HONDA  | 2008 |
+| KA095477 | TOYOTA | 1998 |
++----------+--------+------+
+5 rows in set (0.00 sec)
+-----------------------------------------
+(WEEK 2 STARTS FROM HERE)
+-----------------------------------------                        
+mysql> select *from car order by year asc;
++----------+--------+------+
+| reg_num  | Model  | year |
++----------+--------+------+
+| KA031181 | LANCER | 1957 |
+| KA052250 | INDICA | 1990 |
+| KA095477 | TOYOTA | 1998 |
+| KA041702 | AUDI   | 2005 |
+| KA053408 | HONDA  | 2008 |
++----------+--------+------+
+5 rows in set (0.00 sec)
+mysql> select count(report_num) from car c, participated p where c.reg_num = p.reg_num and c.model='Lancer';
++-------------------+
+| count(report_num) |
++-------------------+
+|                 1 |
++-------------------+
+1 row in set (0.00 sec)
+mysql> select count(distinct driver_id) CNT from participated a, accident b where a.report_num=b.report_num and b.accide
+nt_date like '__08%';
++-----+
+| CNT |
++-----+
+|   1 |
++-----+
+1 row in set (0.00 sec)
+mysql> select *from participated order by damage_amount desc;
++-----------+----------+------------+---------------+
+| Driver_id | reg_num  | Report_num | Damage_amount |
++-----------+----------+------------+---------------+
+| A02       | KA053408 |         12 |         50000 |
+| A03       | KA095477 |         13 |         25000 |
+| A01       | KA052250 |         11 |         10000 |
+| A05       | KA041702 |         15 |          5000 |
+| A04       | KA031181 |         14 |          3000 |
++-----------+----------+------------+---------------+
+5 rows in set (0.00 sec)
+mysql> select avg(damage_amount) from participated;
++--------------------+
+| avg(damage_amount) |
++--------------------+
+|         18600.0000 |
++--------------------+
+1 row in set (0.00 sec)
+mysql> delete from participated where damage_amount<18600;
+Query OK, 3 rows affected (0.00 sec)
+mysql> select *from participated;
++-----------+----------+------------+---------------+
+| Driver_id | reg_num  | Report_num | Damage_amount |
++-----------+----------+------------+---------------+
+| A02       | KA053408 |         12 |         50000 |
+| A03       | KA095477 |         13 |         25000 |
++-----------+----------+------------+---------------+
+2 rows in set (0.00 sec)
+mysql> select name from person a, participated b WHERE a.driver_id = b.driver_id and
+    -> damage_amount > (select avg(damage_amount) from participated);
++---------+
+| NAME    |
++---------+
+| Pradeep |
+| Smith   |
++---------+
+2 rows in set (0.00 sec)
+mysql> select max(damage_amount) from participated;
++--------------------+
+| max(damage_amount) |
++--------------------+
+|              50000 |
++--------------------+
+1 row in set (0.00 sec)
