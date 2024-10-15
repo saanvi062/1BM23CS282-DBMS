@@ -1,0 +1,422 @@
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.36 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database sbi_bank;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use sbi_bank;
+Database changed
+mysql> desc sbi_bank;
+ERROR 1146 (42S02): Table 'sbi_bank.sbi_bank' doesn't exist
+mysql> desc branch;
+ERROR 1146 (42S02): Table 'sbi_bank.branch' doesn't exist
+mysql> create table sbi_bank.branch(Branch name varchar(30),Branch city varchar(25),assets int,PRIMARY KEY(Branch name));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'name varchar(30),Branch city varchar(25),assets int,PRIMARY KEY(Branch name))' at line 1
+mysql> create table sbi_bank.branch(\
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> create table sbi_bank.branch(
+    -> branch_name varchar(30),
+    -> branch_city varchar(25),
+    -> assets int,
+    -> PRIMARY KEY(branch_name));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table dhiksha_bank.BankAccount(
+    -> Accno int,
+    -> Branch_name varchar(30),
+    -> Balance int,
+    -> PRIMARY KEY(Accno),
+    -> foreign key (Branch_name) references branch(Branch_name)
+    -> );
+ERROR 1049 (42000): Unknown database 'dhiksha_bank'
+mysql>
+mysql>
+mysql>
+mysql> create table sbi_bank.BankAccount(
+    -> Accno int,
+    -> Branch_name varchar(30),
+    -> Balance int,
+    -> PRIMARY KEY(Accno),
+    -> foreign key (Branch_name) references branch(Branch_name)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table sbi_bank.BankCustomer(
+    -> Customername varchar(20),
+    -> Customer_street varchar(30),
+    -> CustomerCity varchar (35),
+    -> PRIMARY KEY(Customername)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table sbi_bank.Depositer(
+    -> Customername varchar(20),
+    -> Accno int,
+    -> PRIMARY KEY(Customername,Accno),
+    ->
+    -> foreign key (Accno) references BankAccount(Accno),
+    -> foreign key (Customername) references BankCustomer(Customername)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table sbi_bank.Loan(
+    -> Loan_number int,
+    -> Branch_name varchar(30),
+    -> Amount int,
+    -> PRIMARY KEY(Loan_number),
+    -> foreign key (Branch_name) references branch(Branch_name)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc branch;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| branch_name | varchar(30) | NO   | PRI | NULL    |       |
+| branch_city | varchar(25) | YES  |     | NULL    |       |
+| assets      | int         | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> desc bankaccount;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Accno       | int         | NO   | PRI | NULL    |       |
+| Branch_name | varchar(30) | YES  | MUL | NULL    |       |
+| Balance     | int         | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc bankcustomer;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| Customername    | varchar(20) | NO   | PRI | NULL    |       |
+| Customer_street | varchar(30) | YES  |     | NULL    |       |
+| CustomerCity    | varchar(35) | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc depositer;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| Customername | varchar(20) | NO   | PRI | NULL    |       |
+| Accno        | int         | NO   | PRI | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc loan;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Loan_number | int         | NO   | PRI | NULL    |       |
+| Branch_name | varchar(30) | YES  | MUL | NULL    |       |
+| Amount      | int         | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into branch values(&quot;SBI_Chamrajpet&quot;,&quot;Bangalore&quot;,50000);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SBI_Chamrajpet&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Bangalore&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',50000)' at line 1
+mysql> insert into branch values(&quot;SBI_ResidencyRoad&quot;,&quot;Bangalore&quot;,10000);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SBI_ResidencyRoad&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Bangalore&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',10000)' at line 1
+mysql> insert into branch values(&quot;SBI_ShivajiRoad&quot;,&quot;Bombay&quot;,20000);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SBI_ShivajiRoad&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Bombay&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',20000)' at line 1
+mysql> insert into branch values(&quot;SBI_ParlimentRoad&quot;,&quot;Delhi&quot;,10000);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SBI_ParlimentRoad&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Delhi&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',10000)' at line 1
+mysql> insert into branch values(&quot;SBI_Jantarmantar&quot;,&quot;Delhi&quot;,20000);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SBI_Jantarmantar&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Delhi&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',20000)' at line 1
+mysql> insert into branch values(1,"SBI_CHAMRAJPET","BLORE",50000);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into branch values("SBI_CHAMRAJPET","BLORE",50000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql>  insert into branch values("SBI_RESIDENCYROAD","BLORE",10000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql>  insert into branch values("SBI_SHIVAJIROAD","BOMBAY",20000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql>  insert into branch values("SBI_PARLIMENTROAD","DELHI",10000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql>  insert into branch values("SBI_JANTARMANTAR","DELHI",20000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM BRANCH;
++-------------------+-------------+--------+
+| branch_name       | branch_city | assets |
++-------------------+-------------+--------+
+| SBI_CHAMRAJPET    | BLORE       |  50000 |
+| SBI_JANTARMANTAR  | DELHI       |  20000 |
+| SBI_PARLIMENTROAD | DELHI       |  10000 |
+| SBI_RESIDENCYROAD | BLORE       |  10000 |
+| SBI_SHIVAJIROAD   | BOMBAY      |  20000 |
++-------------------+-------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> insert into BankAccount values(1,"SBI_CHAMRAJPET",2000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into BankAccount values(2,"SBI_RESIDENCYROAD",5000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into BankAccount values(3,"SBI_SHIVAJIROAD",6000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into BankAccount values(4,"SBI_PARLIMENTROAD",9000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into BankAccount values(5,"SBI_JANTARMANTAR",8000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into BankAccount values(6,"SBI_SHIVAJIROAD",4000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into BankAccount values(7,"SBI_RESIDENCYROAD",4000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into BankAccount values(8,"SBI_PARLIMENTROAD",3000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into BankAccount values(9,"SBI_RESIDENCYROAD",5000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into BankAccount values(10,"SBI_JANTARMANTAR",2000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql> SELECT * FROM BANKACCOUNT;
++-------+-------------------+---------+
+| Accno | Branch_name       | Balance |
++-------+-------------------+---------+
+|     1 | SBI_CHAMRAJPET    |    2000 |
+|     2 | SBI_RESIDENCYROAD |    5000 |
+|     3 | SBI_SHIVAJIROAD   |    6000 |
+|     4 | SBI_PARLIMENTROAD |    9000 |
+|     5 | SBI_JANTARMANTAR  |    8000 |
+|     6 | SBI_SHIVAJIROAD   |    4000 |
+|     7 | SBI_RESIDENCYROAD |    4000 |
+|     8 | SBI_PARLIMENTROAD |    3000 |
+|     9 | SBI_RESIDENCYROAD |    5000 |
+|    10 | SBI_JANTARMANTAR  |    2000 |
++-------+-------------------+---------+
+10 rows in set (0.00 sec)
+
+mysql> insert into BankCustomer values(&quot;Avinash&quot;,&quot;Bull_Temple_Road&quot;,&quot;Bangalore&quot;);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Avinash&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Bull_Temple_Road&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Bangalore&quot' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> INSERT INTO BANKCUSTOMER VALUES("AVINASH","BULL_TEMPLE_ROAD","BLORE");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BANKCUSTOMER VALUES("AVI","BANNERGATTA_ROAD","BLORE");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BANKCUSTOMER VALUES("VINASH","NATIONAL_CLG_ROAD","BLORE");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BANKCUSTOMER VALUES("INASH","AKBAR_ROAD","DELHI");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BANKCUSTOMER VALUES("ANASH","PRITHVIRAJ_ROAD","BLORE");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM BANKCUSTOMER;
++--------------+-------------------+--------------+
+| Customername | Customer_street   | CustomerCity |
++--------------+-------------------+--------------+
+| ANASH        | PRITHVIRAJ_ROAD   | BLORE        |
+| AVI          | BANNERGATTA_ROAD  | BLORE        |
+| AVINASH      | BULL_TEMPLE_ROAD  | BLORE        |
+| INASH        | AKBAR_ROAD        | DELHI        |
+| VINASH       | NATIONAL_CLG_ROAD | BLORE        |
++--------------+-------------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> INSERT INTO DEPOSITER VALUES("AVINASH",1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO DEPOSITER VALUES("AVI",2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO DEPOSITER VALUES("INASH",4);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO DEPOSITER VALUES("ANASH",5);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO DEPOSITER VALUES("AVINASH",8);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO DEPOSITER VALUES("INASH",9);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO DEPOSITER VALUES("AVI",10);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO DEPOSITER VALUES("INASH",7);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM DEPOSITER;
++--------------+-------+
+| Customername | Accno |
++--------------+-------+
+| AVINASH      |     1 |
+| AVI          |     2 |
+| INASH        |     4 |
+| ANASH        |     5 |
+| INASH        |     7 |
+| AVINASH      |     8 |
+| INASH        |     9 |
+| AVI          |    10 |
++--------------+-------+
+8 rows in set (0.00 sec)
+
+mysql> INSERT INTO LOAN VALUES(1,"SBI_CHAMRAJPET",1000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO LOAN VALUES(2,"SBI_RESIDENCYROAD,2000);
+    "> INSERT INTO LOAN VALUES(3,"SBI_SHIVAJIROAD",3000);
+    "> INSERT INTO LOAN VALUES(4,"SBI_PARLIMENTROAD",4000);
+    "> INSERT INTO LOAN VALUES(5,"SBI_JANTARMANTAR",5000);
+    ">
+    "> ;
+    "> INSERT INTO LOAN VALUES(2,"SBI_RESIDENCYROAD",2000);
+    ">
+    ">
+    ">
+    ">
+    "> INSERT INTO LOAN VALUES(1,"SBI_CHAMRAJPET",1000);
+    "> "
+    -> INSERT INTO LOAN VALUES(1,"SBI_CHAMRAJPET",1000);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SBI_SHIVAJIROAD",3000);
+INSERT INTO LOAN VALUES(4,"SBI_PARLIMENTROAD",4000);
+INS' at line 2
+mysql> INSERT INTO LOAN VALUES(2,"SBI_RESIDENCYROAD",2000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO LOAN VALUES(3,"SBI_SHIVAJIROAD",3000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO LOAN VALUES(4,"SBI_PARLIMENTROAD",4000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO LOAN VALUES(5,"SBI_JANTARMANTAR",5000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql> SELECT * FROM LOAN;
++-------------+-------------------+--------+
+| Loan_number | Branch_name       | Amount |
++-------------+-------------------+--------+
+|           1 | SBI_CHAMRAJPET    |   1000 |
+|           2 | SBI_RESIDENCYROAD |   2000 |
+|           3 | SBI_SHIVAJIROAD   |   3000 |
+|           4 | SBI_PARLIMENTROAD |   4000 |
+|           5 | SBI_JANTARMANTAR  |   5000 |
++-------------+-------------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT BRANCH_NAME,CONCAT(ASSETS/100000,'LAKHS')ASSETS_IN_LAKHS FROM BRANCH;
++-------------------+-----------------+
+| BRANCH_NAME       | ASSETS_IN_LAKHS |
++-------------------+-----------------+
+| SBI_CHAMRAJPET    | 0.5000LAKHS     |
+| SBI_JANTARMANTAR  | 0.2000LAKHS     |
+| SBI_PARLIMENTROAD | 0.1000LAKHS     |
+| SBI_RESIDENCYROAD | 0.1000LAKHS     |
+| SBI_SHIVAJIROAD   | 0.2000LAKHS     |
++-------------------+-----------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT D.CUSTOMERNAME FROM DEPOSITER D,BANKACCOUNT B WHERE B.BRANCH_NAME='SBI_RESIDENCYROAD' AN
+D D.ACCNO=B.ACCNO GROUP BY D.CUSTOMERNAME HAVING COUNT(D.ACCNO)>=2;
++--------------+
+| CUSTOMERNAME |
++--------------+
+| INASH        |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> create view sum_of_loan
+    -> as select Branch_name, SUM(Balance)
+    -> from BankAccount
+    -> group by Branch_name;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT * FROM SUM_OF_LOAN;
++-------------------+--------------+
+| Branch_name       | SUM(Balance) |
++-------------------+--------------+
+| SBI_CHAMRAJPET    |         2000 |
+| SBI_JANTARMANTAR  |        10000 |
+| SBI_PARLIMENTROAD |        12000 |
+| SBI_RESIDENCYROAD |        14000 |
+| SBI_SHIVAJIROAD   |        10000 |
++-------------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> select bc.Customername, CONCAT(Balance+1000,&#39; rupees&#39;)
+    -> UPDATED_BALANCE from BankAccount b, BankCustomer bc, Depositer d
+    -> where bc.Customername=d.Customername and b.Accno=d.Accno and
+    -> bc.Customercity='Bangalore';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '&
+UPDATED_BALANCE from BankAccount b, BankCustomer bc, Depositer d
+where bc.Cust' at line 1
+mysql> SELECT BC.CUSTOMERNAME,CONCAT(BALANCE+1000,'RUPEES)
+    '> UPDATED_BALANCE FROM BANKACCOUNT B,BANKCUSTOMER BC,DEPOSITER D
+    '> WHERE BC.CUSTOMERNAME=D.CUSTOMERNAME AND B.ACCNO=D.ACCNO AND BC.CUSTOMERCITY='BLORE';
+    '> '
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '';
+'' at line 3
+mysql> SELECT BC.CUSTOMERNAME,CONCAT(BALANCE+1000,'RUPEES')
+    -> UPDATED_BALANCE FROM BANKACCOUNT B,BANKCUSTOMER BC,DEPOSITER D
+    -> WHERE BC.CUSTOMERNAME=D.CUSTOMERNAME AND B.ACCNO=D.ACCNO AND BC.CUSTOMERCITY='BLORE';
++--------------+-----------------+
+| CUSTOMERNAME | UPDATED_BALANCE |
++--------------+-----------------+
+| ANASH        | 9000RUPEES      |
+| AVI          | 6000RUPEES      |
+| AVI          | 3000RUPEES      |
+| AVINASH      | 3000RUPEES      |
+| AVINASH      | 4000RUPEES      |
++--------------+-----------------+
+5 rows in set (0.00 sec)
