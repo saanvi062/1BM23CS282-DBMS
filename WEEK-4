@@ -1,0 +1,137 @@
+mysql> use sbi_bank;
+Database changed
+mysql> show tables;
++--------------------+
+| Tables_in_sbi_bank |
++--------------------+
+| bankaccount        |
+| bankcustomer       |
+| branch             |
+| depositer          |
+| loan               |
+| sum_of_loan        |
++--------------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from bankaccount;
++-------+-------------------+---------+
+| Accno | Branch_name       | Balance |
++-------+-------------------+---------+
+|     1 | SBI_CHAMRAJPET    |    2000 |
+|     2 | SBI_RESIDENCYROAD |    5000 |
+|     3 | SBI_SHIVAJIROAD   |    6000 |
+|     4 | SBI_PARLIMENTROAD |    9000 |
+|     5 | SBI_JANTARMANTAR  |    8000 |
+|     6 | SBI_SHIVAJIROAD   |    4000 |
+|     7 | SBI_RESIDENCYROAD |    4000 |
+|     8 | SBI_PARLIMENTROAD |    3000 |
+|     9 | SBI_RESIDENCYROAD |    5000 |
+|    10 | SBI_JANTARMANTAR  |    2000 |
++-------+-------------------+---------+
+10 rows in set (0.01 sec)
+
+mysql>
+mysql> select distinct S.customername
+    -> from depositer as S
+    -> where not exists ( (select branch_name
+    -> from branch
+    -> where branch_city = 'Delhi') except
+    -> (select R.branch_name
+    -> from depositer as T, bankaccount as R
+    -> where T.Accno = R.Accno
+    -> and S.customername = T.customername ));
+Empty set (0.01 sec)
+
+mysql>
+mysql> SELECT * FROM BANKACCOUNT;
++-------+-------------------+---------+
+| Accno | Branch_name       | Balance |
++-------+-------------------+---------+
+|     1 | SBI_CHAMRAJPET    |    2000 |
+|     2 | SBI_RESIDENCYROAD |    5000 |
+|     3 | SBI_SHIVAJIROAD   |    6000 |
+|     4 | SBI_PARLIMENTROAD |    9000 |
+|     5 | SBI_JANTARMANTAR  |    8000 |
+|     6 | SBI_SHIVAJIROAD   |    4000 |
+|     7 | SBI_RESIDENCYROAD |    4000 |
+|     8 | SBI_PARLIMENTROAD |    3000 |
+|     9 | SBI_RESIDENCYROAD |    5000 |
+|    10 | SBI_JANTARMANTAR  |    2000 |
++-------+-------------------+---------+
+10 rows in set (0.00 sec)
+
+mysql>  select branch_name from branch where assets > all (select assets from branch
+    ->  where branch_city = 'Bangalore');
++-------------------+
+| branch_name       |
++-------------------+
+| SBI_CHAMRAJPET    |
+| SBI_JANTARMANTAR  |
+| SBI_PARLIMENTROAD |
+| SBI_RESIDENCYROAD |
+| SBI_SHIVAJIROAD   |
++-------------------+
+5 rows in set (0.00 sec)
+
+mysql> delete from bankaccount
+    ->  where branch_name in (
+    ->  select branch_name from branch
+    -> where branch_city = 'Bombay');
+Query OK, 2 rows affected (0.00 sec)
+
+mysql> select *from bankaccount;
++-------+-------------------+---------+
+| Accno | Branch_name       | Balance |
++-------+-------------------+---------+
+|     1 | SBI_CHAMRAJPET    |    2000 |
+|     2 | SBI_RESIDENCYROAD |    5000 |
+|     4 | SBI_PARLIMENTROAD |    9000 |
+|     5 | SBI_JANTARMANTAR  |    8000 |
+|     7 | SBI_RESIDENCYROAD |    4000 |
+|     8 | SBI_PARLIMENTROAD |    3000 |
+|     9 | SBI_RESIDENCYROAD |    5000 |
+|    10 | SBI_JANTARMANTAR  |    2000 |
++-------+-------------------+---------+
+8 rows in set (0.00 sec)
+
+mysql> UPDATE BANKACCOUNT SET BALANCE=BALANCE *1.05;
+Query OK, 8 rows affected (0.00 sec)
+Rows matched: 8  Changed: 8  Warnings: 0
+
+mysql> SELECT * FROM BANKACCOUNT;
++-------+-------------------+---------+
+| Accno | Branch_name       | Balance |
++-------+-------------------+---------+
+|     1 | SBI_CHAMRAJPET    |    2100 |
+|     2 | SBI_RESIDENCYROAD |    5250 |
+|     4 | SBI_PARLIMENTROAD |    9450 |
+|     5 | SBI_JANTARMANTAR  |    8400 |
+|     7 | SBI_RESIDENCYROAD |    4200 |
+|     8 | SBI_PARLIMENTROAD |    3150 |
+|     9 | SBI_RESIDENCYROAD |    5250 |
+|    10 | SBI_JANTARMANTAR  |    2100 |
++-------+-------------------+---------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT * FROM LOAN ORDER BY AMOUNT DESC;
++-------------+-------------------+--------+
+| Loan_number | Branch_name       | Amount |
++-------------+-------------------+--------+
+|           5 | SBI_JANTARMANTAR  |   5000 |
+|           4 | SBI_PARLIMENTROAD |   4000 |
+|           3 | SBI_SHIVAJIROAD   |   3000 |
+|           2 | SBI_RESIDENCYROAD |   2000 |
+|           1 | SBI_CHAMRAJPET    |   1000 |
++-------------+-------------------+--------+
+5 rows in set (0.01 sec)
+
+mysql> select distinct S.customername
+    -> from depositer as S
+    -> where not exists ( (select branch_name
+    -> from branch
+    -> where branch_city = 'Delhi') except
+    -> (select R.branch_name
+    -> from depositer as T, bankaccount as R
+    -> where T.Accno = R.Accno
+    -> and S.customername = T.customername ));
+Empty set (0.00 sec)
